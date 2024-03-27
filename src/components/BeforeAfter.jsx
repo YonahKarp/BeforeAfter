@@ -8,6 +8,8 @@ import html2canvas from 'html2canvas';
 
 const BeforeAfter = (props) => {
 
+    const isButtonActive = props.beforeImage.length > 200 && props.afterImage.length > 200
+
     const copyCaptureToClipboard = () => {
         let element = document.querySelector('#compare');
 
@@ -36,7 +38,9 @@ const BeforeAfter = (props) => {
 
     return (
         <div className='compareContainer'>
-            <div className='button' onClick={() => copyCaptureToClipboard()}>
+            <div className={`button ${isButtonActive ? 'enabled' : 'disabled'}`} 
+                onClick={() => isButtonActive ? copyCaptureToClipboard() : null}
+            >
                 copy to clipboard
             </div>
             <div id="compare">

@@ -18,8 +18,9 @@ export class App extends Component {
 			<div>
 				<h2>Before After compare</h2>
 				<ImageDrop/>
-				{/* <ImageSlider/> */}
 				<BeforeAfter/>
+
+				<ImageSlider/>
 			</div>
 		)
 	}
