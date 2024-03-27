@@ -35372,6 +35372,7 @@ var _reactRedux = require("react-redux");
 var _html2canvas = _interopRequireDefault(require("html2canvas"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var BeforeAfter = function BeforeAfter(props) {
+  var isButtonActive = props.beforeImage.length > 200 && props.afterImage.length > 200;
   var copyCaptureToClipboard = function copyCaptureToClipboard() {
     var element = document.querySelector('#compare');
     (0, _html2canvas.default)(element, {
@@ -35399,9 +35400,9 @@ var BeforeAfter = function BeforeAfter(props) {
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "compareContainer"
   }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "button",
+    className: "button ".concat(isButtonActive ? 'enabled' : 'disabled'),
     onClick: function onClick() {
-      return copyCaptureToClipboard();
+      return isButtonActive ? copyCaptureToClipboard() : null;
     }
   }, "copy to clipboard"), /*#__PURE__*/_react.default.createElement("div", {
     id: "compare"
@@ -35461,7 +35462,7 @@ var App = exports.App = /*#__PURE__*/function (_Component) {
   return (0, _createClass2.default)(App, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h2", null, "Before After compare"), /*#__PURE__*/_react.default.createElement(_ImageDrop.default, null), /*#__PURE__*/_react.default.createElement(_BeforeAfter.default, null));
+      return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("h2", null, "Before After compare"), /*#__PURE__*/_react.default.createElement(_ImageDrop.default, null), /*#__PURE__*/_react.default.createElement(_BeforeAfter.default, null), /*#__PURE__*/_react.default.createElement(_ImageSlider.default, null));
     }
   }]);
 }(_react.Component);
@@ -36274,8 +36275,8 @@ var _reducers = _interopRequireDefault(require("../reducers"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var initialState = {
   doneLoading: false,
-  beforeImage: 'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*',
-  afterImage: 'https://www.shutterstock.com/image-photo/cat-love-holds-flower-his-600nw-622118159.jpg'
+  beforeImage: 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=',
+  afterImage: 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM='
 };
 var store = exports.store = (0, _redux.createStore)(_reducers.default, initialState);
 },{"redux":"node_modules/redux/es/redux.js","../reducers":"src/reducers/index.js"}],"src/index.js":[function(require,module,exports) {
@@ -36315,7 +36316,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57271" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59442" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

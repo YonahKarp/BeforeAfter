@@ -188,8 +188,8 @@ body {
 
 .compareContainer {
   display: flex;
-  justify-content: center;
-  flex-direction: column; }
+  flex-direction: column;
+  align-items: center; }
 
 .button {
   display: inline-block;
@@ -199,10 +199,28 @@ body {
   width: max-content;
   transition: all .2s;
   will-change: transform;
-  -webkit-font-smoothing: subpixel-antialiased; }
-  .button:active {
+  -webkit-font-smoothing: subpixel-antialiased;
+  position: relative;
+  cursor: pointer; }
+  .button.disabled {
+    opacity: .5;
+    cursor: not-allowed; }
+    .button.disabled:hover::before {
+      content: 'Copy to clipboard only available for images droped in boxes';
+      display: block;
+      position: absolute;
+      background-color: #333;
+      padding: 10px 16px;
+      border-radius: 5px;
+      top: 0;
+      right: 0;
+      transform: translateY(-100%);
+      opacity: 1; }
+  .button.enabled:hover {
+    filter: brightness(110%); }
+  .button.enabled:active {
     filter: brightness(120%);
-    transform: scale(0.95) perspective(1px); }
+    transform: scale(0.98) perspective(1px); }
 
 #compare {
   background-color: #0a0a0a;
