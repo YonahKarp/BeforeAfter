@@ -1,0 +1,50 @@
+
+.compareContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.button{
+  display: inline-block;
+  background: #222;
+  border-radius: 50px;
+  padding: 16px 32px;
+  width: max-content;
+  transition: all .2s;
+  will-change: transform;
+  // backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+
+  &:active{
+    filter: brightness(120%);
+    transform: scale(.95) perspective(1px);
+    ;
+  }
+}
+
+#compare{
+  background-color: #0a0a0a;
+  display: inline-flex;
+  justify-content: center;
+  gap: 32px;
+
+
+  
+    h2{
+      margin-bottom: 0;
+    }
+
+    .compareElement{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    img{
+      height: 500px;
+      // max-width: calc(50vw - 64px);
+      object-fit: contain;
+    }
+  
+}

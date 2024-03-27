@@ -1,0 +1,60 @@
+@import './presets.scss';
+
+body{
+    background: #0a0a0a;
+    color: white;
+    padding: 20px
+}
+
+.loading{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: lightgray;
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+
+    div{margin-bottom: 5px;}
+
+    #loading{
+        > span {
+            animation: loader .9s -.6s infinite cubic-bezier(.85,.25,.37,.85);
+            border-radius: 5px;
+            margin: 2px;
+            height: 30px;
+            display: inline-block;
+            width: 5px;
+            background-color: #444;
+
+            &:nth-child(3), &:nth-child(5){animation-delay: -.4s!important}
+            &:nth-child(2), &:nth-child(6){animation-delay: -.2s!important}
+        }
+    }
+}
+
+//loader
+@keyframes loader {
+    0%,100% {transform: scaleY(1)}
+    50% {transform: scaleY(.4)}
+}
+
+.attribution{
+    position: fixed;
+    bottom: 5px;
+    right: 5px;
+
+
+    background: black;
+    color: white;
+    padding: 10px 15px;
+    display: inline-block;
+    border-radius: 5px;
+
+}
