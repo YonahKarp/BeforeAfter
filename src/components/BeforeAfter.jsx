@@ -45,11 +45,11 @@ const BeforeAfter = (props) => {
             </div>
             <div id="compare">
                 <div className='compareElement'>
-                    <h2>Before</h2>
+                    <h2 contentEditable>Before</h2>
                     <img className='image' src={props.beforeImage} alt="Before" crossOrigin="anonymous"/>
                 </div>
                 <div className='compareElement'>
-                    <h2>After</h2>
+                    <h2 contentEditable>After</h2>
                     <img className='image' src={props.afterImage} alt="After" crossOrigin="anonymous"/>
                 </div>
             </div>
