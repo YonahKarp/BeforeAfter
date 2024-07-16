@@ -27409,13 +27409,17 @@ module.hot.accept(reloadCSS);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SET_DATA = exports.SET_BEFORE_IMAGE = exports.SET_AFTER_IMAGE = void 0;
+exports.SET_DATA = exports.SET_BEFORE_VIDEO = exports.SET_BEFORE_IMAGE = exports.SET_AFTER_VIDEO = exports.SET_AFTER_IMAGE = void 0;
 exports.setAfterImage = setAfterImage;
+exports.setAfterVideo = setAfterVideo;
 exports.setBeforeImage = setBeforeImage;
+exports.setBeforeVideo = setBeforeVideo;
 exports.setData = setData;
 var SET_DATA = exports.SET_DATA = 'SET_DATA';
 var SET_BEFORE_IMAGE = exports.SET_BEFORE_IMAGE = 'SET_BEFORE_IMAGE';
 var SET_AFTER_IMAGE = exports.SET_AFTER_IMAGE = 'SET_AFTER_IMAGE';
+var SET_BEFORE_VIDEO = exports.SET_BEFORE_VIDEO = 'SET_BEFORE_VIDEO';
+var SET_AFTER_VIDEO = exports.SET_AFTER_VIDEO = 'SET_AFTER_VIDEO';
 function setData(data) {
   return {
     type: SET_DATA,
@@ -27436,6 +27440,18 @@ function setAfterImage(image) {
     payload: image
   };
 }
+function setBeforeVideo(video) {
+  return {
+    type: SET_BEFORE_VIDEO,
+    payload: video
+  };
+}
+function setAfterVideo(video) {
+  return {
+    type: SET_AFTER_VIDEO,
+    payload: video
+  };
+}
 },{}],"src/scss/beforeAfterSlider.module.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 module.hot.dispose(reloadCSS);
@@ -27454,7 +27470,7 @@ var _reactRedux = require("react-redux");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 var ImageDrop = function ImageDrop(props) {
-  var handleImageDrop = function handleImageDrop(event, setImageFunction) {
+  var handleImageDrop = function handleImageDrop(event, setImageFunction, setVideoFunction) {
     event.preventDefault();
     var file = event.dataTransfer.files[0];
     if (file.type.startsWith('image/')) {
@@ -27463,6 +27479,9 @@ var ImageDrop = function ImageDrop(props) {
         setImageFunction(e.target.result);
       };
       reader.readAsDataURL(file);
+    } else if (file.type.startsWith('video/')) {
+      var src = URL.createObjectURL(file);
+      setVideoFunction(src);
     } else {
       alert('Please drop an image file.');
     }
@@ -27474,7 +27493,7 @@ var ImageDrop = function ImageDrop(props) {
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "dropArea",
     onDrop: function onDrop(event) {
-      return handleImageDrop(event, props.onSetBeforeImage);
+      return handleImageDrop(event, props.onSetBeforeImage, props.onSetBeforeVideo);
     },
     onDragOver: function onDragOver(event) {
       return event.preventDefault();
@@ -27484,7 +27503,7 @@ var ImageDrop = function ImageDrop(props) {
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "dropArea",
     onDrop: function onDrop(event) {
-      return handleImageDrop(event, props.onSetAfterImage);
+      return handleImageDrop(event, props.onSetAfterImage, props.onSetAfterVideo);
     },
     onDragOver: function onDragOver(event) {
       return event.preventDefault();
@@ -27501,6 +27520,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     onSetAfterImage: function onSetAfterImage(image) {
       dispatch((0, _actions.setAfterImage)(image));
+    },
+    onSetBeforeVideo: function onSetBeforeVideo(video) {
+      dispatch((0, _actions.setBeforeVideo)(video));
+    },
+    onSetAfterVideo: function onSetAfterVideo(video) {
+      dispatch((0, _actions.setAfterVideo)(video));
     }
   };
 };
@@ -27593,6 +27618,7 @@ var ImageSlider = function ImageSlider(props) {
   var handleSliderChange = function handleSliderChange(event) {
     setSliderPosition(event.target.value);
   };
+  if (props.beforeVideo || props.afterVideo) return null;
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "sliderContainer"
   }, /*#__PURE__*/_react.default.createElement("input", {
@@ -27609,20 +27635,27 @@ var ImageSlider = function ImageSlider(props) {
       width: "".concat(sliderPosition, "%"),
       overflow: 'hidden'
     }
-  }, /*#__PURE__*/_react.default.createElement("img", {
-    className: "image",
+  }, props.beforeImage && /*#__PURE__*/_react.default.createElement("img", {
     src: props.beforeImage,
     alt: "Before"
-  })), /*#__PURE__*/_react.default.createElement("img", {
+  }), props.beforeVideo && /*#__PURE__*/_react.default.createElement("video", {
+    src: props.beforeVideo,
+    alt: "Before"
+  })), props.afterImage && /*#__PURE__*/_react.default.createElement("img", {
     className: "sliderImage image",
     src: props.afterImage,
+    alt: "After"
+  }), props.afterVideo && /*#__PURE__*/_react.default.createElement("video", {
+    src: props.afterVideo,
     alt: "After"
   })));
 };
 var mapStateToProps = function mapStateToProps(state) {
   return {
     beforeImage: state.beforeImage,
-    afterImage: state.afterImage
+    afterImage: state.afterImage,
+    beforeVideo: state.beforeVideo,
+    afterVideo: state.afterVideo
   };
 };
 var _default = exports.default = (0, _reactRedux.connect)(mapStateToProps)(ImageSlider);
@@ -35366,13 +35399,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _react = _interopRequireDefault(require("react"));
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+var _react = _interopRequireWildcard(require("react"));
 require("../scss/beforeAfterSimple.module.scss");
 var _reactRedux = require("react-redux");
 var _html2canvas = _interopRequireDefault(require("html2canvas"));
+function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function (e) { return e ? t : r; })(e); }
+function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != typeof e && "function" != typeof e) return { default: e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n.default = e, t && t.set(e, n), n; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var BeforeAfter = function BeforeAfter(props) {
-  var isButtonActive = props.beforeImage.length > 200 && props.afterImage.length > 200;
+  var _props$beforeImage$le, _props$beforeImage, _props$afterImage$len, _props$afterImage, _beforeVideoRef$curre2, _afterVideoRef$curren2;
+  var isImageButtonActive = ((_props$beforeImage$le = (_props$beforeImage = props.beforeImage) === null || _props$beforeImage === void 0 ? void 0 : _props$beforeImage.length) !== null && _props$beforeImage$le !== void 0 ? _props$beforeImage$le : 0) > 200 && ((_props$afterImage$len = (_props$afterImage = props.afterImage) === null || _props$afterImage === void 0 ? void 0 : _props$afterImage.length) !== null && _props$afterImage$len !== void 0 ? _props$afterImage$len : 0) > 200;
+  var isVideoButtonActive = props.beforeVideo != null || props.afterVideo != null;
   var copyCaptureToClipboard = function copyCaptureToClipboard() {
     var element = document.querySelector('#compare');
     (0, _html2canvas.default)(element, {
@@ -35397,39 +35435,126 @@ var BeforeAfter = function BeforeAfter(props) {
       });
     });
   };
+  var _useState = (0, _react.useState)(0),
+    _useState2 = (0, _slicedToArray2.default)(_useState, 2),
+    beforeVideoStart = _useState2[0],
+    setBeforeVideoStart = _useState2[1];
+  var _useState3 = (0, _react.useState)(0),
+    _useState4 = (0, _slicedToArray2.default)(_useState3, 2),
+    afterVideoStart = _useState4[0],
+    setAfterVideoStart = _useState4[1];
+  var beforeVideoRef = (0, _react.useRef)(null);
+  var afterVideoRef = (0, _react.useRef)(null);
+  var onBeforeVideoStartChanged = (0, _react.useCallback)(function (e) {
+    setBeforeVideoStart(e.target.value);
+    if (beforeVideoRef.current) {
+      var _afterVideoRef$curren;
+      var video = beforeVideoRef.current;
+      video.currentTime = e.target.value;
+      if (!video.paused || !((_afterVideoRef$curren = afterVideoRef.current) !== null && _afterVideoRef$curren !== void 0 && _afterVideoRef$curren.paused)) pauseVideos();
+    }
+  }, [pauseVideos]);
+  var onAfterVideoStartChanged = (0, _react.useCallback)(function (e) {
+    setAfterVideoStart(e.target.value);
+    if (afterVideoRef.current) {
+      var _beforeVideoRef$curre;
+      var video = afterVideoRef.current;
+      video.currentTime = e.target.value;
+      if (!video.paused || !((_beforeVideoRef$curre = beforeVideoRef.current) !== null && _beforeVideoRef$curre !== void 0 && _beforeVideoRef$curre.paused)) pauseVideos();
+    }
+  }, [pauseVideos]);
+  var beforeVideoOnEnded = (0, _react.useCallback)(function () {
+    if (beforeVideoRef.current) beforeVideoRef.current.currentTime = beforeVideoStart;
+  }, [beforeVideoStart]);
+  var afterVideoOnEnded = (0, _react.useCallback)(function () {
+    if (afterVideoRef.current) afterVideoRef.current.currentTime = afterVideoStart;
+  }, [afterVideoStart]);
+  var startVideos = (0, _react.useCallback)(function () {
+    if (beforeVideoRef.current) {
+      beforeVideoRef.current.currentTime = beforeVideoStart;
+      beforeVideoRef.current.play();
+    }
+    if (afterVideoRef.current) {
+      afterVideoRef.current.currentTime = afterVideoStart;
+      afterVideoRef.current.play();
+    }
+  }, [beforeVideoStart, afterVideoStart]);
+  var pauseVideos = (0, _react.useCallback)(function () {
+    if (beforeVideoRef.current) {
+      beforeVideoRef.current.currentTime = beforeVideoStart;
+      beforeVideoRef.current.pause();
+    }
+    if (afterVideoRef.current) {
+      afterVideoRef.current.currentTime = afterVideoStart;
+      afterVideoRef.current.pause();
+    }
+  }, [beforeVideoStart, afterVideoStart]);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "compareContainer"
-  }, /*#__PURE__*/_react.default.createElement("div", {
-    className: "button ".concat(isButtonActive ? 'enabled' : 'disabled'),
+  }, !isVideoButtonActive ? /*#__PURE__*/_react.default.createElement("div", {
+    className: "button ".concat(isImageButtonActive ? 'enabled' : 'disabled'),
     onClick: function onClick() {
-      return isButtonActive ? copyCaptureToClipboard() : null;
+      return isImageButtonActive ? copyCaptureToClipboard() : null;
     }
-  }, "copy to clipboard"), /*#__PURE__*/_react.default.createElement("div", {
+  }, "copy to clipboard") : /*#__PURE__*/_react.default.createElement("div", {
+    className: "button",
+    onClick: startVideos
+  }, "Play Videos \u25B6\uFE0F"), /*#__PURE__*/_react.default.createElement("div", {
     id: "compare"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "compareElement"
-  }, /*#__PURE__*/_react.default.createElement("h2", null, "Before"), /*#__PURE__*/_react.default.createElement("img", {
-    className: "image",
+  }, /*#__PURE__*/_react.default.createElement("h2", {
+    contentEditable: true
+  }, "Before"), props.beforeImage && /*#__PURE__*/_react.default.createElement("img", {
     src: props.beforeImage,
     alt: "Before",
     crossOrigin: "anonymous"
-  })), /*#__PURE__*/_react.default.createElement("div", {
+  }), props.beforeVideo && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("video", {
+    src: props.beforeVideo,
+    alt: "beforeVideo",
+    ref: beforeVideoRef,
+    onEnded: beforeVideoOnEnded
+  }), /*#__PURE__*/_react.default.createElement("input", {
+    className: "vidStartSlider",
+    type: "range",
+    max: (_beforeVideoRef$curre2 = beforeVideoRef.current) === null || _beforeVideoRef$curre2 === void 0 ? void 0 : _beforeVideoRef$curre2.duration,
+    min: 0,
+    step: 0.1,
+    value: beforeVideoStart,
+    onChange: onBeforeVideoStartChanged
+  }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "compareElement"
-  }, /*#__PURE__*/_react.default.createElement("h2", null, "After"), /*#__PURE__*/_react.default.createElement("img", {
-    className: "image",
+  }, /*#__PURE__*/_react.default.createElement("h2", {
+    contentEditable: true
+  }, "After"), props.afterImage && /*#__PURE__*/_react.default.createElement("img", {
     src: props.afterImage,
     alt: "After",
     crossOrigin: "anonymous"
-  }))));
+  }), props.afterVideo && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("video", {
+    src: props.afterVideo,
+    alt: "afterVideo",
+    ref: afterVideoRef,
+    onEnded: afterVideoOnEnded
+  }), /*#__PURE__*/_react.default.createElement("input", {
+    className: "vidStartSlider",
+    type: "range",
+    max: (_afterVideoRef$curren2 = afterVideoRef.current) === null || _afterVideoRef$curren2 === void 0 ? void 0 : _afterVideoRef$curren2.duration,
+    min: 0,
+    step: 0.1,
+    value: afterVideoStart,
+    onChange: onAfterVideoStartChanged
+  })))));
 };
 var mapStateToProps = function mapStateToProps(state) {
   return {
     beforeImage: state.beforeImage,
-    afterImage: state.afterImage
+    afterImage: state.afterImage,
+    beforeVideo: state.beforeVideo,
+    afterVideo: state.afterVideo
   };
 };
 var _default = exports.default = (0, _reactRedux.connect)(mapStateToProps)(BeforeAfter);
-},{"react":"node_modules/react/index.js","../scss/beforeAfterSimple.module.scss":"src/scss/beforeAfterSimple.module.scss","react-redux":"node_modules/react-redux/es/index.js","html2canvas":"node_modules/html2canvas/dist/html2canvas.js"}],"src/App.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/slicedToArray":"node_modules/@babel/runtime/helpers/slicedToArray.js","react":"node_modules/react/index.js","../scss/beforeAfterSimple.module.scss":"src/scss/beforeAfterSimple.module.scss","react-redux":"node_modules/react-redux/es/index.js","html2canvas":"node_modules/html2canvas/dist/html2canvas.js"}],"src/App.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36252,11 +36377,23 @@ function reducer(state, action) {
       });
     case _actions.SET_BEFORE_IMAGE:
       return _objectSpread(_objectSpread({}, state), {}, {
+        beforeVideo: null,
         beforeImage: action.payload
       });
     case _actions.SET_AFTER_IMAGE:
       return _objectSpread(_objectSpread({}, state), {}, {
+        afterVideo: null,
         afterImage: action.payload
+      });
+    case _actions.SET_BEFORE_VIDEO:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        beforeImage: null,
+        beforeVideo: action.payload
+      });
+    case _actions.SET_AFTER_VIDEO:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        afterImage: null,
+        afterVideo: action.payload
       });
     default:
       return state;
@@ -36276,7 +36413,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var initialState = {
   doneLoading: false,
   beforeImage: 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=',
-  afterImage: 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM='
+  afterImage: 'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=',
+  beforeVideo: null,
+  afterVideo: null
 };
 var store = exports.store = (0, _redux.createStore)(_reducers.default, initialState);
 },{"redux":"node_modules/redux/es/redux.js","../reducers":"src/reducers/index.js"}],"src/index.js":[function(require,module,exports) {
@@ -36316,7 +36455,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59442" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61031" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
