@@ -12,18 +12,21 @@ const ImageSlider = (props) => {
     setSliderPosition(event.target.value);
   }
 
+  if(props.beforeVideo || props.afterVideo)
+    return null
+
   return (
       <div className='sliderContainer'>
           <input type="range" min="0" max="100" value={sliderPosition} onChange={handleSliderChange} />
           <div className={'beforeAfterContainer'}>
               <div className={'sliderImage beforeImage'}  style={{ width: `${sliderPosition}%`, overflow: 'hidden' }}>
 
-                  <img 
-                      className='image'
-                      src={props.beforeImage} 
-                      alt="Before" />
+                  {props.beforeImage && <img src={props.beforeImage} alt="Before" />}
+                  {props.beforeVideo && <video src={props.beforeVideo} alt='Before'/>}
               </div>
-              <img className='sliderImage image' src={props.afterImage} alt="After" />
+
+              {props.afterImage && <img className='sliderImage image' src={props.afterImage} alt="After" />}
+              {props.afterVideo && <video src={props.afterVideo} alt='After'/>}
           </div>
       </div>
   );
@@ -31,7 +34,9 @@ const ImageSlider = (props) => {
 
 const mapStateToProps = (state) => ({
     beforeImage: state.beforeImage,
-    afterImage: state.afterImage
+    afterImage: state.afterImage,
+    beforeVideo: state.beforeVideo,
+    afterVideo: state.afterVideo,
 })
 
 

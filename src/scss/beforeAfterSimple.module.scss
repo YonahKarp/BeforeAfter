@@ -56,8 +56,6 @@
   justify-content: center;
   gap: 32px;
 
-
-  
     h2{
       margin-bottom: 0;
     }
@@ -68,10 +66,29 @@
       align-items: center;
     }
 
-    img{
+    img, video{
       height: 500px;
-      // max-width: calc(50vw - 64px);
+      max-width: calc(50vw - 16px);
       object-fit: contain;
     }
   
+}
+
+.vidStartSlider{
+  width: 100%;
+  -webkit-appearance: none;
+  height: 10px;
+  background: #d3d3d3;
+  outline: none;
+  border-radius: 10px;
+  
+  &::-webkit-slider-thumb{
+    appearance: none;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 10px;
+  cursor: pointer;
+  }
+
 }
